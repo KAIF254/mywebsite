@@ -1,168 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Website</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-    }
+<meta charset="UTF-8">
+<title>Catty</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .navbar {
-      background: #0d6efd;
-      padding: 15px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #1e1e2f, #2b5876);
+  color: white;
+}
 
-    .navbar a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-    }
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+}
 
-    .hero {
-      text-align: center;
-      padding: 60px;
-      background: #f4f4f4;
-    }
+.navbar h2 {
+  color: #ffcc70;
+}
 
-    .services {
-      padding: 40px;
-      text-align: center;
-    }
+.navbar a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-    .service-box {
-      display: inline-block;
-      width: 250px;
-      margin: 15px;
-      padding: 20px;
-      background: #eee;
-      border-radius: 10px;
-    }
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
 
-    .contact {
-      padding: 40px;
-      background: #f4f4f4;
-      text-align: center;
-    }
+.hero h1 {
+  font-size: 42px;
+  color: #ffcc70;
+}
 
-    input, textarea {
-      width: 80%;
-      padding: 10px;
-      margin: 10px;
-    }
+/* AI Section */
+.ai-section {
+  text-align: center;
+  padding: 50px;
+}
 
-    button {
-      padding: 10px 20px;
-      background: #0d6efd;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+/* Upload Box */
+.upload-box {
+  border: 2px dashed #ffcc70;
+  padding: 50px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  display: inline-block;
+}
 
-    .ai-section {
-      text-align: center;
-      padding: 40px;
-    }
+.upload-box:hover {
+  background: rgba(255,255,255,0.1);
+}
 
-    img {
-      margin-top: 15px;
-      max-width: 200px;
-    }
-  </style>
+/* Hide input */
+#upload {
+  display: none;
+}
+
+/* Preview FIXED */
+#preview {
+  display: block;
+  margin: 20px auto;
+  max-width: 260px;
+  border-radius: 15px;
+}
+
+/* Result */
+#result {
+  margin-top: 20px;
+  font-size: 22px;
+  color: #00ffcc;
+}
+
+/* Services */
+.services {
+  padding: 50px;
+  text-align: center;
+}
+
+.service-box {
+  display: inline-block;
+  width: 250px;
+  margin: 15px;
+  padding: 20px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+}
+
+/* Extra sections */
+.section {
+  padding: 50px;
+  text-align: center;
+}
+
+/* Contact */
+.contact {
+  padding: 40px;
+  text-align: center;
+}
+
+input, textarea {
+  width: 80%;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 12px 25px;
+  background: #ffcc70;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  background: rgba(0,0,0,0.5);
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <h2>MyBrand</h2>
-    <div>
-      <a href="#">Home</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-      <a href="#ai">AI Scan</a>
-    </div>
+<!-- Navbar -->
+<div class="navbar">
+  <h2>Catty</h2>
+  <div>
+    <a href="#">Home</a>
+    <a href="#ai">Scan</a>
+    <a href="#services">Services</a>
+    <a href="#help">Help</a>
+    <a href="#contact">Contact</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Welcome to Catty</h1>
+  <p>Smart AI Image Detection Platform</p>
+</div>
+
+<!-- AI Scanner -->
+<div class="ai-section" id="ai">
+
+  <label class="upload-box">
+    📸 Upload Your Image
+    <input type="file" id="upload">
+  </label>
+
+  <img id="preview">
+  <div id="result"></div>
+
+</div>
+
+<!-- Services -->
+<div class="services" id="services">
+  <h2>Our Features</h2>
+
+  <div class="service-box">
+    <h3>🖼️ Images</h3>
+    <p>Detect objects in images</p>
   </div>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1>Welcome Kaif 🚀</h1>
-    <p>Your DevOps + AI Journey Starts Here</p>
+  <div class="service-box">
+    <h3>🎥 Videos</h3>
+    <p>Analyze video frames (coming soon)</p>
   </div>
 
-  <!-- AI SECTION 🔥 -->
-  <div class="ai-section" id="ai">
-    <h2>AI Image Scanner 🤖</h2>
-
-    <input type="file" id="upload"><br>
-    <img id="preview">
-    <h3 id="result"></h3>
+  <div class="service-box">
+    <h3>🎧 Audio</h3>
+    <p>Audio recognition (coming soon)</p>
   </div>
+</div>
 
-  <!-- Services -->
-  <div class="services" id="services">
-    <h2>Our Services</h2>
+<!-- Help Section -->
+<div class="section" id="help">
+  <h2>Help Center</h2>
+  <p>Upload clear images for better results.</p>
+  <p>Supported formats: JPG, PNG</p>
+</div>
 
-    <div class="service-box">
-      <h3>Web Design</h3>
-      <p>Modern responsive websites</p>
-    </div>
+<!-- Contact -->
+<div class="contact" id="contact">
+  <h2>Contact Us</h2>
+  <input placeholder="Name"><br>
+  <input placeholder="Email"><br>
+  <textarea placeholder="Message"></textarea><br>
+  <button>Send</button>
+</div>
 
-    <div class="service-box">
-      <h3>DevOps</h3>
-      <p>CI/CD, Docker, Cloud setup</p>
-    </div>
+<!-- Footer -->
+<div class="footer">
+  <p>© 2026 Catty | All Rights Reserved</p>
+</div>
 
-    <div class="service-box">
-      <h3>AI Solutions</h3>
-      <p>Image recognition & automation</p>
-    </div>
-  </div>
+<!-- AI Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 
-  <!-- Contact -->
-  <div class="contact" id="contact">
-    <h2>Contact Us</h2>
+<script>
+let model;
 
-    <input type="text" placeholder="Your Name"><br>
-    <input type="email" placeholder="Your Email"><br>
-    <textarea placeholder="Your Message"></textarea><br>
+async function loadModel() {
+  model = await mobilenet.load();
+  document.getElementById("result").innerText = "AI Ready ✅";
+}
+loadModel();
 
-    <button>Send</button>
-  </div>
+document.getElementById("upload").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  const img = document.getElementById("preview");
 
-  <!-- AI SCRIPT -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+  img.src = URL.createObjectURL(file);
 
-  <script>
-    let model;
-
-    async function loadModel() {
-      model = await mobilenet.load();
-      document.getElementById("result").innerText = "Model Loaded ✅";
-    }
-
-    loadModel();
-
-    document.getElementById("upload").addEventListener("change", async (e) => {
-      const file = e.target.files[0];
-      const img = document.getElementById("preview");
-
-      img.src = URL.createObjectURL(file);
-
-      img.onload = async () => {
-        const predictions = await model.classify(img);
-
-        document.getElementById("result").innerText =
-          "Result: " + predictions[0].className;
-      };
-    });
-  </script>
+  img.onload = async () => {
+    const predictions = await model.classify(img);
+    document.getElementById("result").innerText =
+      "Detected: " + predictions[0].className;
+  };
+});
+</script>
 
 </body>
 </html>
