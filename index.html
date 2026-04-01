@@ -10,7 +10,6 @@
       font-family: Arial;
     }
 
-    /* Navbar */
     .navbar {
       background: #0d6efd;
       padding: 15px;
@@ -25,14 +24,12 @@
       text-decoration: none;
     }
 
-    /* Hero */
     .hero {
       text-align: center;
       padding: 60px;
       background: #f4f4f4;
     }
 
-    /* Services */
     .services {
       padding: 40px;
       text-align: center;
@@ -47,7 +44,6 @@
       border-radius: 10px;
     }
 
-    /* Contact */
     .contact {
       padding: 40px;
       background: #f4f4f4;
@@ -65,6 +61,17 @@
       background: #0d6efd;
       color: white;
       border: none;
+      cursor: pointer;
+    }
+
+    .ai-section {
+      text-align: center;
+      padding: 40px;
+    }
+
+    img {
+      margin-top: 15px;
+      max-width: 200px;
     }
   </style>
 </head>
@@ -78,13 +85,23 @@
       <a href="#">Home</a>
       <a href="#services">Services</a>
       <a href="#contact">Contact</a>
+      <a href="#ai">AI Scan</a>
     </div>
   </div>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <div class="hero">
     <h1>Welcome Kaif 🚀</h1>
-    <p>Your DevOps Journey Starts Here</p>
+    <p>Your DevOps + AI Journey Starts Here</p>
+  </div>
+
+  <!-- AI SECTION 🔥 -->
+  <div class="ai-section" id="ai">
+    <h2>AI Image Scanner 🤖</h2>
+
+    <input type="file" id="upload"><br>
+    <img id="preview">
+    <h3 id="result"></h3>
   </div>
 
   <!-- Services -->
@@ -102,8 +119,8 @@
     </div>
 
     <div class="service-box">
-      <h3>Support</h3>
-      <p>24/7 technical support</p>
+      <h3>AI Solutions</h3>
+      <p>Image recognition & automation</p>
     </div>
   </div>
 
@@ -117,6 +134,35 @@
 
     <button>Send</button>
   </div>
+
+  <!-- AI SCRIPT -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+
+  <script>
+    let model;
+
+    async function loadModel() {
+      model = await mobilenet.load();
+      document.getElementById("result").innerText = "Model Loaded ✅";
+    }
+
+    loadModel();
+
+    document.getElementById("upload").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      const img = document.getElementById("preview");
+
+      img.src = URL.createObjectURL(file);
+
+      img.onload = async () => {
+        const predictions = await model.classify(img);
+
+        document.getElementById("result").innerText =
+          "Result: " + predictions[0].className;
+      };
+    });
+  </script>
 
 </body>
 </html>
