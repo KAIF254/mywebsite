@@ -13,7 +13,6 @@ body {
   color: white;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -32,7 +31,6 @@ body {
   font-weight: bold;
 }
 
-/* Hero */
 .hero {
   text-align: center;
   padding: 80px 20px;
@@ -43,19 +41,16 @@ body {
   color: #ffcc70;
 }
 
-/* AI Section */
 .ai-section {
   text-align: center;
   padding: 50px;
 }
 
-/* Upload Box */
 .upload-box {
   border: 2px dashed #ffcc70;
   padding: 50px;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 18px;
   display: inline-block;
 }
 
@@ -63,12 +58,10 @@ body {
   background: rgba(255,255,255,0.1);
 }
 
-/* Hide input */
 #upload {
   display: none;
 }
 
-/* Preview FIXED */
 #preview {
   display: block;
   margin: 20px auto;
@@ -76,14 +69,27 @@ body {
   border-radius: 15px;
 }
 
-/* Result */
+.spinner {
+  display: none;
+  margin: 20px auto;
+  border: 4px solid #ccc;
+  border-top: 4px solid #ffcc70;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
 #result {
   margin-top: 20px;
   font-size: 22px;
   color: #00ffcc;
 }
 
-/* Services */
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
 .services {
   padding: 50px;
   text-align: center;
@@ -98,13 +104,11 @@ body {
   border-radius: 15px;
 }
 
-/* Extra sections */
 .section {
   padding: 50px;
   text-align: center;
 }
 
-/* Contact */
 .contact {
   padding: 40px;
   text-align: center;
@@ -127,7 +131,6 @@ button {
   cursor: pointer;
 }
 
-/* Footer */
 .footer {
   background: rgba(0,0,0,0.5);
   text-align: center;
@@ -139,7 +142,6 @@ button {
 
 <body>
 
-<!-- Navbar -->
 <div class="navbar">
   <h2>Catty</h2>
   <div>
@@ -151,13 +153,11 @@ button {
   </div>
 </div>
 
-<!-- Hero -->
 <div class="hero">
   <h1>Welcome to Catty</h1>
   <p>Smart AI Image Detection Platform</p>
 </div>
 
-<!-- AI Scanner -->
 <div class="ai-section" id="ai">
 
   <label class="upload-box">
@@ -166,38 +166,24 @@ button {
   </label>
 
   <img id="preview">
+  <div class="spinner" id="spinner"></div>
   <div id="result"></div>
 
 </div>
 
-<!-- Services -->
 <div class="services" id="services">
   <h2>Our Features</h2>
 
-  <div class="service-box">
-    <h3>🖼️ Images</h3>
-    <p>Detect objects in images</p>
-  </div>
-
-  <div class="service-box">
-    <h3>🎥 Videos</h3>
-    <p>Analyze video frames (coming soon)</p>
-  </div>
-
-  <div class="service-box">
-    <h3>🎧 Audio</h3>
-    <p>Audio recognition (coming soon)</p>
-  </div>
+  <div class="service-box">🖼️ Images</div>
+  <div class="service-box">🎥 Videos</div>
+  <div class="service-box">🎧 Audio</div>
 </div>
 
-<!-- Help Section -->
 <div class="section" id="help">
   <h2>Help Center</h2>
   <p>Upload clear images for better results.</p>
-  <p>Supported formats: JPG, PNG</p>
 </div>
 
-<!-- Contact -->
 <div class="contact" id="contact">
   <h2>Contact Us</h2>
   <input placeholder="Name"><br>
@@ -206,33 +192,49 @@ button {
   <button>Send</button>
 </div>
 
-<!-- Footer -->
 <div class="footer">
-  <p>© 2026 Catty | All Rights Reserved</p>
+  <p>© 2026 Catty</p>
 </div>
 
-<!-- AI Scripts -->
+<!-- Pose Detection -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
 
 <script>
-function simplifyResult(text) {
-  text = text.toLowerCase();
+let detector;
+let modelLoaded = false;
 
-  // Animal detection
-  if (text.includes("cat")) return "Cat detected 🐱";
-  if (text.includes("dog")) return "Dog detected 🐶";
-  if (text.includes("person")) return "Person detected 👤";
+// Load model properly
+async function loadModel() {
+  detector = await poseDetection.createDetector(
+    poseDetection.SupportedModels.MoveNet
+  );
+  modelLoaded = true;
+  document.getElementById("result").innerText = "Model Ready ✅";
+}
+loadModel();
 
-  // Basic condition (approx)
-  if (text.includes("sleep") || text.includes("lying")) return "Sleeping 😴";
-  if (text.includes("sit")) return "Sitting 🪑";
-  if (text.includes("stand")) return "Standing 🧍";
+// Better detection logic
+function detectPose(keypoints) {
+  const nose = keypoints.find(p => p.name === "nose");
+  const hip = keypoints.find(p => p.name === "left_hip");
+  const knee = keypoints.find(p => p.name === "left_knee");
 
-  return "Object detected 🔍";
+  if (!nose || !hip || !knee) return "Try clear full body image ⚠️";
+
+  if (nose.y > hip.y) return "Sleeping 😴";
+  if (hip.y < knee.y) return "Standing 🧍";
+  return "Sitting 🪑";
 }
 
+// Upload event
 document.getElementById("upload").addEventListener("change", async (e) => {
+
+  if (!modelLoaded) {
+    alert("Model loading... wait karo ⏳");
+    return;
+  }
+
   const file = e.target.files[0];
   const img = document.getElementById("preview");
   const spinner = document.getElementById("spinner");
@@ -241,17 +243,28 @@ document.getElementById("upload").addEventListener("change", async (e) => {
   img.src = URL.createObjectURL(file);
 
   spinner.style.display = "block";
-  result.innerText = "";
+  result.innerText = "Detecting...";
 
   img.onload = async () => {
-    const predictions = await model.classify(img);
+    try {
+      const poses = await detector.estimatePoses(img);
 
-    spinner.style.display = "none";
+      spinner.style.display = "none";
 
-    const raw = predictions[0].className;
-    result.innerText = simplifyResult(raw);
+      if (poses.length > 0) {
+        result.innerText = detectPose(poses[0].keypoints);
+      } else {
+        result.innerText = "No person detected ❌";
+      }
+
+    } catch (err) {
+      spinner.style.display = "none";
+      result.innerText = "Error ❌";
+      console.log(err);
+    }
   };
 });
+</script>
 
 </body>
 </html>
