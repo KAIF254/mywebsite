@@ -216,27 +216,42 @@ button {
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 
 <script>
-let model;
+function simplifyResult(text) {
+  text = text.toLowerCase();
 
-async function loadModel() {
-  model = await mobilenet.load();
-  document.getElementById("result").innerText = "AI Ready ✅";
+  // Animal detection
+  if (text.includes("cat")) return "Cat detected 🐱";
+  if (text.includes("dog")) return "Dog detected 🐶";
+  if (text.includes("person")) return "Person detected 👤";
+
+  // Basic condition (approx)
+  if (text.includes("sleep") || text.includes("lying")) return "Sleeping 😴";
+  if (text.includes("sit")) return "Sitting 🪑";
+  if (text.includes("stand")) return "Standing 🧍";
+
+  return "Object detected 🔍";
 }
-loadModel();
 
 document.getElementById("upload").addEventListener("change", async (e) => {
   const file = e.target.files[0];
   const img = document.getElementById("preview");
+  const spinner = document.getElementById("spinner");
+  const result = document.getElementById("result");
 
   img.src = URL.createObjectURL(file);
 
+  spinner.style.display = "block";
+  result.innerText = "";
+
   img.onload = async () => {
     const predictions = await model.classify(img);
-    document.getElementById("result").innerText =
-      "Detected: " + predictions[0].className;
+
+    spinner.style.display = "none";
+
+    const raw = predictions[0].className;
+    result.innerText = simplifyResult(raw);
   };
 });
-</script>
 
 </body>
 </html>
